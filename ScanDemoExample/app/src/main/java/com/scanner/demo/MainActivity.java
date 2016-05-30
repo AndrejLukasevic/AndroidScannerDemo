@@ -1,13 +1,18 @@
 package com.scanner.demo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.scanlibrary.ScanActivity;
 import com.scanlibrary.Utils;
@@ -22,6 +27,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
     private static final int REQUEST_CODE_SCAN = 47;
 
     private static final String SAVED_SCANNED_HHOTO = "scanned_photo";
+
+    public static final int REQUEST_CAMERA = 1;
 
     // ===========================================================
     // Fields
@@ -61,7 +68,44 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.equals(viewHolder.scabBtn)) {
-            onScanButtonClicked();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Check Permissions Now
+                // Callback onRequestPermissionsResult interceptado na Activity MainActivity
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MainActivity.REQUEST_CAMERA);
+            } else {
+                // permission has been granted, continue as usual
+                onScanButtonClicked();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+                    onScanButtonClicked();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
