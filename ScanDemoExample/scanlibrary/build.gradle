@@ -3,11 +3,11 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 4
         versionName "4.0"
         ndk
@@ -15,11 +15,11 @@ android {
                     moduleName "Scanner"
                 }
     }
-//    sourceSets.main
-//            {
-//                jni.srcDirs = []
-//                jniLibs.srcDir 'src/main/libs'
-//            }
+    sourceSets.main
+            {
+                jni.srcDirs = []
+                jniLibs.srcDir 'src/main/libs'
+            }
     buildTypes {
         release {
             minifyEnabled false
@@ -42,5 +42,3 @@ dependencies {
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:2.3.0'
     compile 'org.opencv:opencv-android:2.4.8'
 }
-
-apply from: 'https://raw.github.com/andrejlukasevic/gradle-mvn-push/master/gradle-mvn-push.gradle'
