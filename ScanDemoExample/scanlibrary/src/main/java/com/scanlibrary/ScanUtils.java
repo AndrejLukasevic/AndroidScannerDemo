@@ -27,7 +27,8 @@ public class ScanUtils {
     // ===========================================================
 
     static {
-        System.loadLibrary("opencv_java");
+        System.loadLibrary("opencv_java3");
+        System.loadLibrary("Scanner");
     }
 
     private static final String LOG_TAG = ScanUtils.class.getSimpleName();
